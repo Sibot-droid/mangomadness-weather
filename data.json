@@ -1,7 +1,7 @@
 ﻿{
     "station":  "Pantech PT-WH2950",
     "location":  "Home weather station",
-    "generated":  "2026-07-26T22:13:54.4010802+10:00",
+    "generated":  "2026-07-26T22:20:16.0290818+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "km/h",
@@ -10,12 +10,12 @@
                   "solar":  "W/m2"
               },
     "current":  {
-                    "t":  "2026-07-26T22:11:39.7644002+10:00",
+                    "t":  "2026-07-26T22:16:43.7732717+10:00",
                     "tempC":  11.7,
                     "dewC":  9.6,
                     "hum":  87,
                     "presHpa":  1024,
-                    "windKmh":  2.1,
+                    "windKmh":  1.4,
                     "gustKmh":  4.3,
                     "dir":  111,
                     "rainMm":  0,
@@ -241,6 +241,22 @@
                        "hum":  87,
                        "presHpa":  1024,
                        "windKmh":  2.1,
+                       "gustKmh":  4.3,
+                       "dir":  111,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  18.5,
+                       "inHum":  65
+                   },
+                   {
+                       "t":  "2026-07-26T22:16:43.7732717+10:00",
+                       "tempC":  11.7,
+                       "dewC":  9.6,
+                       "hum":  87,
+                       "presHpa":  1024,
+                       "windKmh":  1.4,
                        "gustKmh":  4.3,
                        "dir":  111,
                        "rainMm":  0,
