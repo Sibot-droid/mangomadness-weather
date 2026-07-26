@@ -177,12 +177,12 @@ function chart(card, pts, series, opts={}){
 function windRose(card, pts){
   const NS='http://www.w3.org/2000/svg';
   const C=getComputedStyle(document.documentElement),col=n=>C.getPropertyValue(n).trim();
-  const bins=[{max:5,c:col('--sp1')},{max:15,c:col('--sp2')},{max:30,c:col('--sp3')},{max:50,c:col('--sp4')},{max:1e9,c:col('--sp5')}];
-  const binLbl=['<5','5–15','15–30','30–50','50+'];
+  const bins=[{max:5,c:col('--sp1')},{max:10,c:col('--sp2')},{max:20,c:col('--sp3')},{max:30,c:col('--sp4')},{max:1e9,c:col('--sp5')}];
+  const binLbl=['<5','5–10','10–20','20–30','30+'];
   const CALM=1,N=16;
   const counts=Array.from({length:N},()=>bins.map(()=>0));
   let calm=0,total=0;
-  for(const p of pts){const s=num(p.windKmh),d=num(p.dir);
+  for(const p of pts){const s=num(p.windKn),d=num(p.dir);
     if(s===null)continue;total++;
     if(s<CALM||d===null){calm++;continue;}
     const sec=((Math.round(d/(360/N))%N)+N)%N;
@@ -212,7 +212,7 @@ function windRose(card, pts){
       const r0=Rr(f0),r1=Rr(f1),a0=bc-hw,a1=bc+hw;
       const A=P(a0,r0),B=P(a0,r1),D=P(a1,r1),E=P(a1,r0);
       const path=add('path',{d:`M ${A[0]} ${A[1]} L ${B[0]} ${B[1]} A ${r1} ${r1} 0 0 1 ${D[0]} ${D[1]} L ${E[0]} ${E[1]} A ${r0} ${r0} 0 0 0 ${A[0]} ${A[1]} Z`,fill:bins[bi].c,stroke:'var(--surface)','stroke-width':1});
-      const tt=document.createElementNS(NS,'title');tt.textContent=`${compass(bc)} · ${binLbl[bi]} km/h · ${cnt} reading${cnt>1?'s':''} (${(cnt/denom*100).toFixed(1)}%)`;path.appendChild(tt);}}
+      const tt=document.createElementNS(NS,'title');tt.textContent=`${compass(bc)} · ${binLbl[bi]} kn · ${cnt} reading${cnt>1?'s':''} (${(cnt/denom*100).toFixed(1)}%)`;path.appendChild(tt);}}
   add('circle',{cx,cy,r:hole,fill:'var(--surface)',stroke:'var(--grid)','stroke-width':1});
   add('text',{x:cx,y:cy-2,'text-anchor':'middle',fill:'var(--muted)','font-size':9.5},'calm');
   add('text',{x:cx,y:cy+10,'text-anchor':'middle',fill:'var(--ink)','font-size':12,'font-weight':700},Math.round(calm/denom*100)+'%');
@@ -249,7 +249,7 @@ function render(){
   const f=(v,dp=1)=>v===null||v===undefined?'—':(+v).toFixed(dp);
   tile('Temperature',f(cur.tempC),'°C',cur.dewC!=null?`dew point ${f(cur.dewC)}°C`:'',col('--temp'));
   tile('Humidity',f(cur.hum,0),'%','',col('--hum'));
-  tile('Wind',f(cur.windKmh),'km/h',(cur.dir!=null?compass(cur.dir)+' · ':'')+(cur.gustKmh!=null?`gust ${f(cur.gustKmh)}`:''),col('--wind'));
+  tile('Wind',f(cur.windKn),'kn',(cur.dir!=null?compass(cur.dir)+' · ':'')+(cur.gustKn!=null?`gust ${f(cur.gustKn)}`:''),col('--wind'));
   tile('Pressure',f(cur.presHpa,0),'hPa','',col('--pres'));
   tile('Rain today',f(cur.rainMm),'mm',cur.rainRateMm!=null?`rate ${f(cur.rainRateMm,2)} mm/h`:'',col('--rain'));
   tile('Solar',f(cur.solar,0),'W/m²',cur.uv!=null?`UV ${f(cur.uv,0)}`:'',col('--solar'));
@@ -257,12 +257,12 @@ function render(){
 
   // charts
   $('#charts').innerHTML='';
-  windRose(card('Wind rose',[{c:col('--sp1'),t:'<5'},{c:col('--sp2'),t:'5–15'},{c:col('--sp3'),t:'15–30'},{c:col('--sp4'),t:'30–50'},{c:col('--sp5'),t:'50+ km/h'}]),pts);
+  windRose(card('Wind rose',[{c:col('--sp1'),t:'<5'},{c:col('--sp2'),t:'5–10'},{c:col('--sp3'),t:'10–20'},{c:col('--sp4'),t:'20–30'},{c:col('--sp5'),t:'30+ kn'}]),pts);
   chart(card('Temperature (°C)',[{c:col('--temp'),t:'Outdoor'},{c:col('--tin'),t:'Indoor'}]),pts,
     [{key:'tempC',color:col('--temp'),label:'Outdoor'},{key:'inTempC',color:col('--tin'),label:'Indoor'}],{unit:'°C'});
   chart(card('Humidity (%)'),pts,[{key:'hum',color:col('--hum'),label:'Humidity'}],{unit:'%'});
-  chart(card('Wind (km/h)',[{c:col('--wind'),t:'Speed'},{c:col('--wind'),t:'Gust (dashed)'}]),pts,
-    [{key:'windKmh',color:col('--wind'),label:'Speed'},{key:'gustKmh',color:col('--wind'),label:'Gust',dash:'4 3',width:1.5}],{unit:'km/h',zeroFloor:true});
+  chart(card('Wind (kn)',[{c:col('--wind'),t:'Speed'},{c:col('--wind'),t:'Gust (dashed)'}]),pts,
+    [{key:'windKn',color:col('--wind'),label:'Speed'},{key:'gustKn',color:col('--wind'),label:'Gust',dash:'4 3',width:1.5}],{unit:'kn',zeroFloor:true});
   chart(card('Pressure (hPa)'),pts,[{key:'presHpa',color:col('--pres'),label:'Pressure'}],{unit:'hPa'});
   chart(card('Rain rate (mm/h)'),pts,[{key:'rainRateMm',color:col('--rain'),label:'Rain rate'}],{unit:'mm/h',type:'bar',zeroFloor:true});
   chart(card('Solar (W/m²)'),pts,[{key:'solar',color:col('--solar'),label:'Solar'}],{unit:'W/m²',zeroFloor:true});
