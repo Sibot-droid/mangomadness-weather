@@ -1,6 +1,6 @@
 {
-  "name": "Weather Station",
-  "short_name": "Weather",
+  "name": "MangoMadness Weather",
+  "short_name": "Mango Wx",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",

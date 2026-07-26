@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#2a78d6">
-<title>Weather Station</title>
+<title>MangoMadness Weather</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -67,7 +67,7 @@ a{color:var(--tin)}
 </head>
 <body>
 <header>
-  <h1 id="station">Weather Station</h1>
+  <h1 id="brand">🥭 MangoMadness Weather</h1>
   <span class="sub" id="updated">loading…</span>
   <span class="spacer"></span>
   <button class="theme" id="themeBtn" title="Toggle light/dark">◐ Theme</button>
@@ -185,8 +185,7 @@ function tile(cap,val,unit,note,color){
 
 function render(){
   const d=RAW;if(!d)return;
-  $('#station').textContent=d.station||'Weather Station';
-  $('#updated').textContent='updated '+timeAgo(d.generated);
+  $('#updated').textContent=(d.station?d.station+' · ':'')+'updated '+timeAgo(d.generated);
   const cur=d.current||{};
   // filter by range
   let pts=d.series.slice();
@@ -244,7 +243,7 @@ applyTheme(localStorage.getItem('wxtheme'));
 
 load();
 setInterval(load,60000);           // refresh data every minute
-setInterval(()=>{if(RAW)$('#updated').textContent='updated '+timeAgo(RAW.generated);},30000);
+setInterval(()=>{if(RAW)$('#updated').textContent=(RAW.station?RAW.station+' · ':'')+'updated '+timeAgo(RAW.generated);},30000);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
 </body>
