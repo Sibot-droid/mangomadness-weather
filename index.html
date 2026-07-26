@@ -151,6 +151,12 @@ function chart(card, pts, series, opts={}){
     for(const p of pts){const v=num(p[s.key]);if(v===null||v<=0)continue;const x=X(new Date(p.t).getTime()),y=Y(v),y0=Y(0);
       add('rect',{x:x-bw/2,y:Math.min(y,y0),width:bw,height:Math.max(1.5,Math.abs(y0-y)),rx:2,fill:s.color});}
   }else{
+    if(opts.area){const s0=series[0];const vs=[];
+      for(const p of pts){const v=num(p[s0.key]);if(v!==null)vs.push([X(new Date(p.t).getTime()),Y(v)]);}
+      if(vs.length){const yb=Y(sc.lo);let da='M '+vs[0][0].toFixed(1)+' '+vs[0][1].toFixed(1)+' ';
+        for(let i=1;i<vs.length;i++)da+='L '+vs[i][0].toFixed(1)+' '+vs[i][1].toFixed(1)+' ';
+        da+='L '+vs[vs.length-1][0].toFixed(1)+' '+yb.toFixed(1)+' L '+vs[0][0].toFixed(1)+' '+yb.toFixed(1)+' Z';
+        add('path',{d:da,fill:s0.color,opacity:.16,stroke:'none'});}}
     for(const s of series){let d='',pen=false;
       for(const p of pts){const v=num(p[s.key]);const x=X(new Date(p.t).getTime());
         if(v===null){pen=false;continue;}const y=Y(v);d+=(pen?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)+' ';pen=true;}
@@ -264,6 +270,8 @@ function render(){
   let pts=d.series.slice();
   if(RANGE>0){const cut=Date.now()-RANGE*36e5;pts=pts.filter(p=>new Date(p.t).getTime()>=cut);}
   if(pts.length<2)pts=d.series.slice(-Math.max(2,pts.length));
+  const _n=new Date();
+  const todayPts=d.series.filter(p=>{const t=new Date(p.t);return t.getDate()===_n.getDate()&&t.getMonth()===_n.getMonth()&&t.getFullYear()===_n.getFullYear();});
   const C=getComputedStyle(document.documentElement);
   const col=n=>C.getPropertyValue(n).trim();
 
@@ -291,6 +299,7 @@ function render(){
     [{key:'windKn',color:col('--wind'),label:'Speed'},{key:'gustKn',color:col('--wind'),label:'Gust',dash:'4 3',width:1.5}],{unit:'kn',zeroFloor:true});
   chart(card('Pressure (hPa)'),pts,[{key:'presHpa',color:col('--pres'),label:'Pressure'}],{unit:'hPa',dp:0});
   chart(card('Rain rate (mm/h)'),pts,[{key:'rainRateMm',color:col('--rain'),label:'Rain rate'}],{unit:'mm/h',type:'bar',zeroFloor:true,dp:2});
+  if(todayPts.length>=2)chart(card('Rain accumulation — today (mm)'),todayPts,[{key:'rainMm',color:col('--rain'),label:'Rain'}],{unit:'mm',area:true,zeroFloor:true,dp:1});
   chart(card('Solar (W/m²)'),pts,[{key:'solar',color:col('--solar'),label:'Solar'}],{unit:'W/m²',zeroFloor:true,dp:0});
 
   $('#foot').innerHTML=`${esc(d.station||'')} · ${d.series.length} readings logged · every 5&nbsp;min · times are local · generated ${new Date(d.generated).toLocaleString()}`;
