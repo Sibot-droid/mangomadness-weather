@@ -1,7 +1,7 @@
 ﻿{
     "station":  "Pantech PT-WH2950",
     "location":  "Home weather station",
-    "generated":  "2026-07-26T22:21:04.7010477+10:00",
+    "generated":  "2026-07-26T22:33:59.6746285+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "km/h",
@@ -10,19 +10,19 @@
                   "solar":  "W/m2"
               },
     "current":  {
-                    "t":  "2026-07-26T22:16:43.7732717+10:00",
-                    "tempC":  11.7,
-                    "dewC":  9.6,
+                    "t":  "2026-07-26T22:31:56.7390464+10:00",
+                    "tempC":  11.5,
+                    "dewC":  9.4,
                     "hum":  87,
                     "presHpa":  1024,
-                    "windKmh":  1.4,
+                    "windKmh":  0.3,
                     "gustKmh":  4.3,
-                    "dir":  111,
+                    "dir":  110,
                     "rainMm":  0,
                     "rainRateMm":  0,
                     "solar":  0,
                     "uv":  0,
-                    "inTempC":  18.5,
+                    "inTempC":  18.4,
                     "inHum":  65
                 },
     "series":  [
@@ -264,6 +264,54 @@
                        "solar":  0,
                        "uv":  0,
                        "inTempC":  18.5,
+                       "inHum":  65
+                   },
+                   {
+                       "t":  "2026-07-26T22:21:48.7388926+10:00",
+                       "tempC":  11.6,
+                       "dewC":  9.5,
+                       "hum":  87,
+                       "presHpa":  1024,
+                       "windKmh":  1.1,
+                       "gustKmh":  4.3,
+                       "dir":  120,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  18.4,
+                       "inHum":  65
+                   },
+                   {
+                       "t":  "2026-07-26T22:26:51.8085492+10:00",
+                       "tempC":  11.6,
+                       "dewC":  9.5,
+                       "hum":  87,
+                       "presHpa":  1023.7,
+                       "windKmh":  2.6,
+                       "gustKmh":  4.3,
+                       "dir":  105,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  18.4,
+                       "inHum":  65
+                   },
+                   {
+                       "t":  "2026-07-26T22:31:56.7390464+10:00",
+                       "tempC":  11.5,
+                       "dewC":  9.4,
+                       "hum":  87,
+                       "presHpa":  1024,
+                       "windKmh":  0.3,
+                       "gustKmh":  4.3,
+                       "dir":  110,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  18.4,
                        "inHum":  65
                    }
                ]

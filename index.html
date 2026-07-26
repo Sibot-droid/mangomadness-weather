@@ -15,6 +15,7 @@
   --grid:#e1e0d9; --axis:#c3c2b7; --line:#eee; --border:rgba(11,11,11,.10);
   --temp:#eb6834; --tin:#2a78d6; --hum:#2a78d6; --wind:#1baf7a; --pres:#4a3aa7;
   --rain:#256abf; --solar:#eda100; --dew:#1baf7a;
+  --sp1:#cde2fb; --sp2:#86b6ef; --sp3:#3987e5; --sp4:#1c5cab; --sp5:#0d366b;
 }
 @media (prefers-color-scheme:dark){ :root:where(:not([data-theme="light"])){
   color-scheme: dark;
@@ -22,6 +23,7 @@
   --grid:#2c2c2a; --axis:#383835; --line:#2a2a28; --border:rgba(255,255,255,.10);
   --temp:#d95926; --tin:#3987e5; --hum:#3987e5; --wind:#199e70; --pres:#9085e9;
   --rain:#3987e5; --solar:#c98500; --dew:#199e70;
+  --sp1:#9ec5f4; --sp2:#5598e7; --sp3:#3987e5; --sp4:#256abf; --sp5:#18407f;
 }}
 :root[data-theme="dark"]{
   color-scheme: dark;
@@ -29,6 +31,7 @@
   --grid:#2c2c2a; --axis:#383835; --line:#2a2a28; --border:rgba(255,255,255,.10);
   --temp:#d95926; --tin:#3987e5; --hum:#3987e5; --wind:#199e70; --pres:#9085e9;
   --rain:#3987e5; --solar:#c98500; --dew:#199e70;
+  --sp1:#9ec5f4; --sp2:#5598e7; --sp3:#3987e5; --sp4:#256abf; --sp5:#18407f;
 }
 *{box-sizing:border-box}
 body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;margin:0;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
@@ -56,6 +59,7 @@ main{max-width:1080px;margin:0 auto;padding:6px 12px 40px}
 .card .legend{font-size:12px;color:var(--muted);font-weight:400;display:flex;gap:12px;flex-wrap:wrap}
 .card .legend span{display:inline-flex;align-items:center;gap:5px}
 .chartwrap{position:relative;width:100%;overflow:hidden}
+.chartwrap.rose{max-width:400px;margin:0 auto}
 svg.chart{width:100%;height:auto;display:block;touch-action:none}
 .tt{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 8px;font-size:12px;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.12);opacity:0;transition:opacity .08s;white-space:nowrap;z-index:5}
 .tt .tt-t{color:var(--muted);margin-bottom:3px}
@@ -169,6 +173,52 @@ function chart(card, pts, series, opts={}){
   svg.addEventListener('touchstart',move,{passive:true});svg.addEventListener('touchmove',move,{passive:true});svg.addEventListener('touchend',leave);
 }
 
+// Wind rose: 16 compass sectors, petals stacked by speed bin (sequential blue = strength).
+function windRose(card, pts){
+  const NS='http://www.w3.org/2000/svg';
+  const C=getComputedStyle(document.documentElement),col=n=>C.getPropertyValue(n).trim();
+  const bins=[{max:5,c:col('--sp1')},{max:15,c:col('--sp2')},{max:30,c:col('--sp3')},{max:50,c:col('--sp4')},{max:1e9,c:col('--sp5')}];
+  const binLbl=['<5','5–15','15–30','30–50','50+'];
+  const CALM=1,N=16;
+  const counts=Array.from({length:N},()=>bins.map(()=>0));
+  let calm=0,total=0;
+  for(const p of pts){const s=num(p.windKmh),d=num(p.dir);
+    if(s===null)continue;total++;
+    if(s<CALM||d===null){calm++;continue;}
+    const sec=((Math.round(d/(360/N))%N)+N)%N;
+    let bi=bins.findIndex(b=>s<b.max);if(bi<0)bi=bins.length-1;
+    counts[sec][bi]++;}
+  const denom=total||1;
+  const secFreq=counts.map(c=>c.reduce((a,b)=>a+b,0)/denom*100);
+  const maxF=Math.max(1,...secFreq);
+  const step=maxF<=5?1:maxF<=10?2:maxF<=25?5:10;
+  const ringMax=Math.max(step,Math.ceil(maxF/step)*step);
+  const cx=160,cy=158,R=112,hole=20;
+  const Rr=f=>hole+(f/ringMax)*(R-hole);
+  const P=(b,r)=>[cx+r*Math.sin(b*Math.PI/180),cy-r*Math.cos(b*Math.PI/180)];
+  const svg=document.createElementNS(NS,'svg');svg.setAttribute('viewBox','0 0 320 336');svg.setAttribute('class','chart');
+  const add=(t,at,tx)=>{const e=document.createElementNS(NS,t);for(const k in at)e.setAttribute(k,at[k]);if(tx!=null)e.textContent=tx;svg.appendChild(e);return e;};
+  for(let v=step;v<=ringMax+.01;v+=step){const r=Rr(v);
+    add('circle',{cx,cy,r,fill:'none',stroke:'var(--grid)','stroke-width':1});
+    add('text',{x:cx+3,y:cy-r+11,fill:'var(--muted)','font-size':10},v+'%');}
+  const dirs=['N','NE','E','SE','S','SW','W','NW'];
+  for(let i=0;i<8;i++){const b=i*45,pp=P(b,R),ph=P(b,hole);
+    add('line',{x1:ph[0],y1:ph[1],x2:pp[0],y2:pp[1],stroke:'var(--grid)','stroke-width':1});
+    const pl=P(b,R+17);add('text',{x:pl[0],y:pl[1]+4,'text-anchor':'middle',fill:i%2?'var(--muted)':'var(--ink2)','font-size':i%2?10:12,'font-weight':i%2?400:700},dirs[i]);}
+  const hw=360/N/2-1.4;
+  for(let s=0;s<N;s++){const bc=s*(360/N);let cum=0;
+    for(let bi=0;bi<bins.length;bi++){const cnt=counts[s][bi];if(!cnt)continue;
+      const f0=cum/denom*100,f1=(cum+cnt)/denom*100;cum+=cnt;
+      const r0=Rr(f0),r1=Rr(f1),a0=bc-hw,a1=bc+hw;
+      const A=P(a0,r0),B=P(a0,r1),D=P(a1,r1),E=P(a1,r0);
+      const path=add('path',{d:`M ${A[0]} ${A[1]} L ${B[0]} ${B[1]} A ${r1} ${r1} 0 0 1 ${D[0]} ${D[1]} L ${E[0]} ${E[1]} A ${r0} ${r0} 0 0 0 ${A[0]} ${A[1]} Z`,fill:bins[bi].c,stroke:'var(--surface)','stroke-width':1});
+      const tt=document.createElementNS(NS,'title');tt.textContent=`${compass(bc)} · ${binLbl[bi]} km/h · ${cnt} reading${cnt>1?'s':''} (${(cnt/denom*100).toFixed(1)}%)`;path.appendChild(tt);}}
+  add('circle',{cx,cy,r:hole,fill:'var(--surface)',stroke:'var(--grid)','stroke-width':1});
+  add('text',{x:cx,y:cy-2,'text-anchor':'middle',fill:'var(--muted)','font-size':9.5},'calm');
+  add('text',{x:cx,y:cy+10,'text-anchor':'middle',fill:'var(--ink)','font-size':12,'font-weight':700},Math.round(calm/denom*100)+'%');
+  const wrap=document.createElement('div');wrap.className='chartwrap rose';wrap.appendChild(svg);card.appendChild(wrap);
+}
+
 function card(title, legend){
   const c=document.createElement('div');c.className='card';
   const leg=legend?('<span class="legend">'+legend.map(l=>`<span><span class="dot" style="background:${l.c}"></span>${esc(l.t)}</span>`).join('')+'</span>'):'';
@@ -207,6 +257,7 @@ function render(){
 
   // charts
   $('#charts').innerHTML='';
+  windRose(card('Wind rose',[{c:col('--sp1'),t:'<5'},{c:col('--sp2'),t:'5–15'},{c:col('--sp3'),t:'15–30'},{c:col('--sp4'),t:'30–50'},{c:col('--sp5'),t:'50+ km/h'}]),pts);
   chart(card('Temperature (°C)',[{c:col('--temp'),t:'Outdoor'},{c:col('--tin'),t:'Indoor'}]),pts,
     [{key:'tempC',color:col('--temp'),label:'Outdoor'},{key:'inTempC',color:col('--tin'),label:'Indoor'}],{unit:'°C'});
   chart(card('Humidity (%)'),pts,[{key:'hum',color:col('--hum'),label:'Humidity'}],{unit:'%'});
