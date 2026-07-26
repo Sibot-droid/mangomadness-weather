@@ -157,6 +157,18 @@ function chart(card, pts, series, opts={}){
       add('path',{d,fill:'none',stroke:s.color,'stroke-width':s.width||2,'stroke-linejoin':'round','stroke-linecap':'round','stroke-dasharray':s.dash||'','vector-effect':'non-scaling-stroke'});
     }
   }
+  // min / max markers on the primary series (peak only for bars)
+  if(opts.extremes!==false){
+    const s=series[0];let miI=-1,maI=-1,mi=Infinity,ma=-Infinity;
+    pts.forEach((p,i)=>{const v=num(p[s.key]);if(v===null)return;if(v<mi){mi=v;miI=i;}if(v>ma){ma=v;maI=i;}});
+    const dp=opts.dp!=null?opts.dp:1;
+    const label=(idx,val,up)=>{const x=X(new Date(pts[idx].t).getTime()),y=Y(val);
+      if(opts.type!=='bar')add('circle',{cx:x,cy:y,r:3.2,fill:s.color,stroke:'var(--surface)','stroke-width':1.5});
+      const anc=x<mL+18?'start':x>W-mR-18?'end':'middle';
+      const t=add('text',{x,y:up?y-7:y+14,'text-anchor':anc,fill:'var(--ink)','font-size':10,'font-weight':600,'paint-order':'stroke',stroke:'var(--surface)','stroke-width':3,'stroke-linejoin':'round'});
+      t.textContent=(+val.toFixed(dp));};
+    if(maI>=0 && !(opts.type==='bar'&&ma<=0)){ label(maI,ma,true); if(ma!==mi && opts.type!=='bar') label(miI,mi,false); }
+  }
   // hover layer
   const hoverLine=add('line',{x1:0,y1:mT,x2:0,y2:mT+ih,stroke:'var(--axis)','stroke-width':1,opacity:0});
   const dots=series.map(s=>add('circle',{r:3.5,fill:s.color,stroke:'var(--surface)','stroke-width':1.5,opacity:0}));
@@ -274,12 +286,12 @@ function render(){
   windRose(card('Wind rose',[{c:col('--sp1'),t:'<5'},{c:col('--sp2'),t:'5–10'},{c:col('--sp3'),t:'10–20'},{c:col('--sp4'),t:'20–30'},{c:col('--sp5'),t:'30+ kn'}]),pts);
   chart(card('Temperature (°C)',[{c:col('--temp'),t:'Outdoor'},{c:col('--tin'),t:'Indoor'}]),pts,
     [{key:'tempC',color:col('--temp'),label:'Outdoor'},{key:'inTempC',color:col('--tin'),label:'Indoor'}],{unit:'°C'});
-  chart(card('Humidity (%)'),pts,[{key:'hum',color:col('--hum'),label:'Humidity'}],{unit:'%'});
+  chart(card('Humidity (%)'),pts,[{key:'hum',color:col('--hum'),label:'Humidity'}],{unit:'%',dp:0});
   chart(card('Wind (kn)',[{c:col('--wind'),t:'Speed'},{c:col('--wind'),t:'Gust (dashed)'}]),pts,
     [{key:'windKn',color:col('--wind'),label:'Speed'},{key:'gustKn',color:col('--wind'),label:'Gust',dash:'4 3',width:1.5}],{unit:'kn',zeroFloor:true});
-  chart(card('Pressure (hPa)'),pts,[{key:'presHpa',color:col('--pres'),label:'Pressure'}],{unit:'hPa'});
-  chart(card('Rain rate (mm/h)'),pts,[{key:'rainRateMm',color:col('--rain'),label:'Rain rate'}],{unit:'mm/h',type:'bar',zeroFloor:true});
-  chart(card('Solar (W/m²)'),pts,[{key:'solar',color:col('--solar'),label:'Solar'}],{unit:'W/m²',zeroFloor:true});
+  chart(card('Pressure (hPa)'),pts,[{key:'presHpa',color:col('--pres'),label:'Pressure'}],{unit:'hPa',dp:0});
+  chart(card('Rain rate (mm/h)'),pts,[{key:'rainRateMm',color:col('--rain'),label:'Rain rate'}],{unit:'mm/h',type:'bar',zeroFloor:true,dp:2});
+  chart(card('Solar (W/m²)'),pts,[{key:'solar',color:col('--solar'),label:'Solar'}],{unit:'W/m²',zeroFloor:true,dp:0});
 
   $('#foot').innerHTML=`${esc(d.station||'')} · ${d.series.length} readings logged · every 5&nbsp;min · times are local · generated ${new Date(d.generated).toLocaleString()}`;
 }
