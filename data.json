@@ -3,7 +3,7 @@
     "model":  "WS2900",
     "firmware":  "EasyWeatherV1.7.6",
     "location":  "Home weather station",
-    "generated":  "2026-07-27T23:36:03.0088015+10:00",
+    "generated":  "2026-07-27T23:51:02.9880838+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "kn",
