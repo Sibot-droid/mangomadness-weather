@@ -1,7 +1,7 @@
 ﻿{
     "station":  "Pantech PT-WH2950",
     "location":  "Home weather station",
-    "generated":  "2026-07-27T18:21:02.9555637+10:00",
+    "generated":  "2026-07-27T18:27:02.1910754+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "kn",
@@ -10,14 +10,14 @@
                   "solar":  "W/m2"
               },
     "current":  {
-                    "t":  "2026-07-27T18:17:03.6298873+10:00",
+                    "t":  "2026-07-27T18:22:06.6662646+10:00",
                     "tempC":  17,
                     "dewC":  15.7,
                     "hum":  92,
-                    "presHpa":  1023.4,
+                    "presHpa":  1023,
                     "windKn":  0,
                     "gustKn":  0,
-                    "dir":  174,
+                    "dir":  201,
                     "rainMm":  0,
                     "rainRateMm":  0,
                     "rainWeekMm":  0.5,
@@ -25,7 +25,7 @@
                     "rainYearMm":  null,
                     "solar":  0,
                     "uv":  0,
-                    "inTempC":  19.6,
+                    "inTempC":  19.5,
                     "inHum":  69
                 },
     "series":  [
@@ -1262,6 +1262,25 @@
                        "solar":  0,
                        "uv":  0,
                        "inTempC":  19.6,
+                       "inHum":  69
+                   },
+                   {
+                       "t":  "2026-07-27T18:22:06.6662646+10:00",
+                       "tempC":  17,
+                       "dewC":  15.7,
+                       "hum":  92,
+                       "presHpa":  1023,
+                       "windKn":  0,
+                       "gustKn":  0,
+                       "dir":  201,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "rainWeekMm":  0.5,
+                       "rainMonthMm":  8.1,
+                       "rainYearMm":  null,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  19.5,
                        "inHum":  69
                    }
                ]
