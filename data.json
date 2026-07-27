@@ -1,7 +1,7 @@
 ﻿{
     "station":  "Pantech PT-WH2950",
     "location":  "Home weather station",
-    "generated":  "2026-07-27T17:56:19.6133210+10:00",
+    "generated":  "2026-07-27T18:06:03.1097395+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "kn",
@@ -10,14 +10,14 @@
                   "solar":  "W/m2"
               },
     "current":  {
-                    "t":  "2026-07-27T17:51:42.6044193+10:00",
-                    "tempC":  17.3,
-                    "dewC":  15.6,
-                    "hum":  90,
+                    "t":  "2026-07-27T18:01:50.6290833+10:00",
+                    "tempC":  17.2,
+                    "dewC":  15.8,
+                    "hum":  91,
                     "presHpa":  1023.4,
                     "windKn":  0.6,
                     "gustKn":  2.3,
-                    "dir":  306,
+                    "dir":  292,
                     "rainMm":  0,
                     "rainRateMm":  0,
                     "rainWeekMm":  0.5,
@@ -25,7 +25,7 @@
                     "rainYearMm":  null,
                     "solar":  0,
                     "uv":  0,
-                    "inTempC":  18.9,
+                    "inTempC":  19,
                     "inHum":  69
                 },
     "series":  [
@@ -1167,6 +1167,44 @@
                        "solar":  0,
                        "uv":  0,
                        "inTempC":  18.9,
+                       "inHum":  69
+                   },
+                   {
+                       "t":  "2026-07-27T17:56:46.6329819+10:00",
+                       "tempC":  17.2,
+                       "dewC":  15.5,
+                       "hum":  90,
+                       "presHpa":  1023,
+                       "windKn":  0.6,
+                       "gustKn":  2.3,
+                       "dir":  309,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "rainWeekMm":  0.5,
+                       "rainMonthMm":  8.1,
+                       "rainYearMm":  null,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  19,
+                       "inHum":  69
+                   },
+                   {
+                       "t":  "2026-07-27T18:01:50.6290833+10:00",
+                       "tempC":  17.2,
+                       "dewC":  15.8,
+                       "hum":  91,
+                       "presHpa":  1023.4,
+                       "windKn":  0.6,
+                       "gustKn":  2.3,
+                       "dir":  292,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "rainWeekMm":  0.5,
+                       "rainMonthMm":  8.1,
+                       "rainYearMm":  null,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  19,
                        "inHum":  69
                    }
                ]
