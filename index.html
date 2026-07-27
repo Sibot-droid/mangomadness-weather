@@ -292,11 +292,16 @@ function render(){
   const rng=(k,dp,u)=>{const s=S(k);return s?`↓ ${s.lo.toFixed(dp)}   ↑ ${s.hi.toFixed(dp)}${u?' '+u:''}`:'';};
   const pk=(k,dp,u)=>{const s=S(k);return s?`↑ ${s.hi.toFixed(dp)}${u?' '+u:''} peak`:'';};
   tile('Temperature',f(cur.tempC),'°C',cur.dewC!=null?`dew point ${f(cur.dewC)}°C`:'',rng('tempC',1,'°C'),col('--temp'));
-  tile('Humidity',f(cur.hum,0),'%','',rng('hum',0,'%'),col('--hum'));
+  tile('Humidity',f(cur.hum,0),'%',cur.vpdKpa!=null?`VPD ${f(cur.vpdKpa,2)} kPa`:'',rng('hum',0,'%'),col('--hum'));
   tile('Wind',f(cur.windKn),'kn',(cur.dir!=null?compass(cur.dir)+' · ':'')+(cur.gustKn!=null?`gust ${f(cur.gustKn)}`:''),rng('windKn',1,'kn'),col('--wind'));
-  tile('Pressure',f(cur.presHpa,0),'hPa','',rng('presHpa',0,'hPa'),col('--pres'));
+  tile('Pressure',f(cur.presHpa,0),'hPa',cur.presAbsHpa!=null?`absolute ${f(cur.presAbsHpa,0)} hPa`:'',rng('presHpa',0,'hPa'),col('--pres'));
   const rr=v=>v==null?'—':(+v).toFixed(1)+' mm';
-  tileRows('Rain',[['Today',rr(cur.rainMm)],['This week',rr(cur.rainWeekMm)],['This month',rr(cur.rainMonthMm)],['This year',rr(cur.rainYearMm)]],col('--rain'));
+  // 'This event' and 'All time' arrive only on the Ecowitt protocol; omit the rows
+  // entirely on older readings rather than showing a dash for a value never sent.
+  const rainRows=[['Today',rr(cur.rainMm)],['This week',rr(cur.rainWeekMm)],['This month',rr(cur.rainMonthMm)],['This year',rr(cur.rainYearMm)]];
+  if(cur.rainEventMm!=null)rainRows.splice(1,0,['This event',rr(cur.rainEventMm)]);
+  if(cur.rainTotalMm!=null)rainRows.push(['All time',rr(cur.rainTotalMm)]);
+  tileRows('Rain',rainRows,col('--rain'));
   tile('Solar',f(cur.solar,0),'W/m²',cur.uv!=null?`UV ${f(cur.uv,0)}`:'',pk('solar',0,'W/m²'),col('--solar'));
   tile('Indoor',f(cur.inTempC),'°C',cur.inHum!=null?`${f(cur.inHum,0)}% humidity`:'',rng('inTempC',1,'°C'),col('--tin'));
 
@@ -313,7 +318,8 @@ function render(){
   if(todayPts.length>=2)chart(card('Rain accumulation — today (mm)'),todayPts,[{key:'rainMm',color:col('--rain'),label:'Rain'}],{unit:'mm',area:true,zeroFloor:true,dp:1});
   chart(card('Solar (W/m²)'),pts,[{key:'solar',color:col('--solar'),label:'Solar'}],{unit:'W/m²',zeroFloor:true,dp:0});
 
-  $('#foot').innerHTML=`${esc(d.station||'')} · ${d.series.length} readings logged · every 5&nbsp;min · times are local · generated ${new Date(d.generated).toLocaleString()}`;
+  const hw=[d.model,d.firmware].filter(Boolean).map(esc).join(' · ');
+  $('#foot').innerHTML=`${esc(d.station||'')}${hw?' · '+hw:''} · ${d.series.length} readings logged · every 5&nbsp;min · times are local · generated ${new Date(d.generated).toLocaleString()}`;
 }
 
 async function load(){
