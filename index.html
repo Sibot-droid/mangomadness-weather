@@ -298,9 +298,17 @@ function render(){
   const rr=v=>v==null?'—':(+v).toFixed(1)+' mm';
   // 'This event' and 'All time' arrive only on the Ecowitt protocol; omit the rows
   // entirely on older readings rather than showing a dash for a value never sent.
-  const rainRows=[['Today',rr(cur.rainMm)],['This week',rr(cur.rainWeekMm)],['This month',rr(cur.rainMonthMm)],['This year',rr(cur.rainYearMm)]];
+  // Year-to-date is derived from the lifetime total (the console's own yearly field
+  // reports the lifetime figure). Until a full year is logged the baseline is the
+  // first reading we hold, so say "since <date>" rather than claim it as annual.
+  let yearLabel='This year';
+  if(d.rainYearFrom){const f=new Date(d.rainYearFrom);
+    if(f.getMonth()>0||f.getDate()>1)yearLabel=`Since ${f.toLocaleDateString(undefined,{day:'numeric',month:'short'})}`;}
+  const rainRows=[['Today',rr(cur.rainMm)],['This week',rr(cur.rainWeekMm)],['This month',rr(cur.rainMonthMm)],[yearLabel,rr(cur.rainYearMm)]];
   if(cur.rainEventMm!=null)rainRows.splice(1,0,['This event',rr(cur.rainEventMm)]);
-  if(cur.rainTotalMm!=null)rainRows.push(['All time',rr(cur.rainTotalMm)]);
+  // No 'All time' row: the console's totalrainin is a frozen constant (236.220 in on
+  // every reading, unchanged while 2.4 mm of rain was recorded), so it measures
+  // nothing. The value stays in data.json, but showing it would be misleading.
   tileRows('Rain',rainRows,col('--rain'));
   tile('Solar',f(cur.solar,0),'W/m²',cur.uv!=null?`UV ${f(cur.uv,0)}`:'',pk('solar',0,'W/m²'),col('--solar'));
   tile('Indoor',f(cur.inTempC),'°C',cur.inHum!=null?`${f(cur.inHum,0)}% humidity`:'',rng('inTempC',1,'°C'),col('--tin'));
