@@ -3,7 +3,7 @@
     "model":  "WS2900",
     "firmware":  "EasyWeatherV1.7.6",
     "location":  "Home weather station",
-    "generated":  "2026-07-28T21:36:02.9520185+10:00",
+    "generated":  "2026-07-28T21:51:02.9666774+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "kn",
@@ -13,27 +13,27 @@
                   "vpd":  "kPa"
               },
     "current":  {
-                    "t":  "2026-07-27T23:16:37.4574917+10:00",
-                    "tempC":  13.9,
-                    "dewC":  12.9,
-                    "hum":  94,
-                    "presHpa":  1023.7,
-                    "windKn":  0.6,
-                    "gustKn":  2.3,
-                    "dir":  136,
-                    "rainMm":  0,
+                    "t":  "2026-07-28T21:47:43.8647313+10:00",
+                    "tempC":  15,
+                    "dewC":  14.7,
+                    "hum":  98,
+                    "presHpa":  1023.6,
+                    "windKn":  0,
+                    "gustKn":  0,
+                    "dir":  43,
+                    "rainMm":  2.4,
                     "rainRateMm":  0,
-                    "rainWeekMm":  0.6,
-                    "rainMonthMm":  8.1,
+                    "rainWeekMm":  3,
+                    "rainMonthMm":  10.5,
                     "rainYearMm":  6000,
                     "solar":  0,
                     "uv":  0,
-                    "inTempC":  19.3,
-                    "inHum":  73,
-                    "presAbsHpa":  1022.9,
+                    "inTempC":  20.3,
+                    "inHum":  74,
+                    "presAbsHpa":  1020.6,
                     "rainEventMm":  0,
                     "rainTotalMm":  6000,
-                    "vpdKpa":  0.095
+                    "vpdKpa":  0.034
                 },
     "series":  [
                    {
@@ -2841,6 +2841,29 @@
                        "rainEventMm":  0,
                        "rainTotalMm":  6000,
                        "vpdKpa":  0.095
+                   },
+                   {
+                       "t":  "2026-07-28T21:47:43.8647313+10:00",
+                       "tempC":  15,
+                       "dewC":  14.7,
+                       "hum":  98,
+                       "presHpa":  1023.6,
+                       "windKn":  0,
+                       "gustKn":  0,
+                       "dir":  43,
+                       "rainMm":  2.4,
+                       "rainRateMm":  0,
+                       "rainWeekMm":  3,
+                       "rainMonthMm":  10.5,
+                       "rainYearMm":  6000,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  20.3,
+                       "inHum":  74,
+                       "presAbsHpa":  1020.6,
+                       "rainEventMm":  0,
+                       "rainTotalMm":  6000,
+                       "vpdKpa":  0.034
                    }
                ]
 }
