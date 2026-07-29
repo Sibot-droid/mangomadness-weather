@@ -1,10 +1,10 @@
 ﻿{
     "station":  "Pantech PT-WH2950",
-    "model":  null,
-    "firmware":  null,
+    "model":  "WS2900",
+    "firmware":  "EasyWeatherV1.7.6",
     "rainYearFrom":  "2026-07-26T21:02:52.5364245+10:00",
     "location":  "Home weather station",
-    "generated":  "2026-07-29T19:51:04.2781685+10:00",
+    "generated":  "2026-07-29T20:06:03.5539018+10:00",
     "units":  {
                   "temp":  "C",
                   "wind":  "kn",
@@ -14,14 +14,14 @@
                   "vpd":  "kPa"
               },
     "current":  {
-                    "t":  "2026-07-29T19:47:31.3747954+10:00",
-                    "tempC":  16.5,
-                    "dewC":  14.5,
-                    "hum":  88,
-                    "presHpa":  1022.2,
+                    "t":  "2026-07-29T20:04:26.7658299+10:00",
+                    "tempC":  16.1,
+                    "dewC":  14.6,
+                    "hum":  91,
+                    "presHpa":  1022.3,
                     "windKn":  0,
                     "gustKn":  0,
-                    "dir":  323,
+                    "dir":  331,
                     "rainMm":  0,
                     "rainRateMm":  0,
                     "rainWeekMm":  3,
@@ -29,12 +29,12 @@
                     "rainYearMm":  2.4,
                     "solar":  0,
                     "uv":  0,
-                    "inTempC":  20.4,
-                    "inHum":  72,
-                    "presAbsHpa":  null,
-                    "rainEventMm":  null,
-                    "rainTotalMm":  null,
-                    "vpdKpa":  null
+                    "inTempC":  20.5,
+                    "inHum":  73,
+                    "presAbsHpa":  1019.3,
+                    "rainEventMm":  0,
+                    "rainTotalMm":  6000,
+                    "vpdKpa":  0.166
                 },
     "series":  [
                    {
@@ -7764,6 +7764,29 @@
                        "rainEventMm":  null,
                        "rainTotalMm":  null,
                        "vpdKpa":  null
+                   },
+                   {
+                       "t":  "2026-07-29T20:04:26.7658299+10:00",
+                       "tempC":  16.1,
+                       "dewC":  14.6,
+                       "hum":  91,
+                       "presHpa":  1022.3,
+                       "windKn":  0,
+                       "gustKn":  0,
+                       "dir":  331,
+                       "rainMm":  0,
+                       "rainRateMm":  0,
+                       "rainWeekMm":  3,
+                       "rainMonthMm":  10.5,
+                       "rainYearMm":  2.4,
+                       "solar":  0,
+                       "uv":  0,
+                       "inTempC":  20.5,
+                       "inHum":  73,
+                       "presAbsHpa":  1019.3,
+                       "rainEventMm":  0,
+                       "rainTotalMm":  6000,
+                       "vpdKpa":  0.166
                    }
                ]
 }
